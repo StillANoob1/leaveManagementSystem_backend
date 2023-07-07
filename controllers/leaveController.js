@@ -4,13 +4,11 @@ const User = require('../models/userModel');
 
 exports.createLeave = async (req, res) => {
     const { username, department, leaveType, duration } = req.body;
-    
-
     try {
-
         if (leaveType !== 'casual' && leaveType !== 'sick') {
             return res.status(400).json({ message: 'Invalid leave type' });
           }
+          
         const user = await User.findOne({ username });
 
         if (!user) {
@@ -18,7 +16,7 @@ exports.createLeave = async (req, res) => {
         }
 
         if (duration > user[`${leaveType}Leaves`]) {
-            return res.status(400).json({ message: `Insufficient ${leaveType}leaves` });
+            return res.status(400).json({ message: `Insufficient ${leaveType} leaves` });
         }
 
         user[`${leaveType}Leaves`] -= duration;
